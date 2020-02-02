@@ -1,3 +1,4 @@
+// i suggest you also add this route to an entry file, like index.js, so you import everything  from there
 module.exports = app => {
     const users = require("../controllers/user.controller.js");
   

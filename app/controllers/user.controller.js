@@ -3,6 +3,9 @@ const User = require('../models/user.model.js');
 // Create and cave a new user
 exports.create = (req, res) => {
   
+  // move to middleware this. is important to have this logic on one function so it can be reused
+  // https://expressjs.com/en/guide/writing-middleware.html
+
   // validate request
   if (!req.body) {
       res.status(400).send({
@@ -50,6 +53,7 @@ exports.findOne = (req, res) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
+                    // I hightly recommend to use custom errors, just create models with basic error message and structures
                     message: `Not found User with id ${req.params.userId}.`
                 });
             } else {
@@ -97,6 +101,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     User.remove(req.params.userId, (err, data) => {
         if (err) {
+          // delegate this responsability to something more generic. i recommend you isolate the logic and avoid to implementing it on every endpoint
           if (err.kind === "not_found") {
             res.status(404).send({
               message: `Not found user with id ${req.params.userId}.`
@@ -112,6 +117,7 @@ exports.delete = (req, res) => {
       });
 };
 
+// this doesnt have much sense, i mean, why would you delete all users?
 // Delete all users from the database.
 exports.deleteAll = (req, res) => {
     User.removeAll((err, data) => {

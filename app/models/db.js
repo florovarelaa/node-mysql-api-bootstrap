@@ -1,3 +1,5 @@
+// this should not be on models, it could be on a services folder :)
+
 const mysql = require('mysql');
 const dbConfig = require('../config/db.config.js');
 

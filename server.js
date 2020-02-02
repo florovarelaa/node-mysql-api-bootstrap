@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+// move this to an idex file on routes folder
 const userRoutes = require('./app/routes/user.routes');
 
 let app = express();
