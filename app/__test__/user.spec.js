@@ -48,4 +48,20 @@ describe("Testing the users API", () => {
         expect(responseGetUserByUsername.body.username).toBe(user.username);
         done();
     });
+
+    it('It should throw an error when sending and empty user to the database with post /user method', async done => {
+        const emptyUser = {
+            username: 'testUser1',
+            pass: '123123123',
+            firstName: 'Test',
+            lastName: 'User 1',
+            email: 'testuser1@testuser.com',
+        };
+        try {
+            const responsePostEmptyUser = await supertest(app).post('/users').send(emptyUser);
+        } catch (error) {
+            expect(error).toThrow()
+        }
+        done();
+    })
 });
