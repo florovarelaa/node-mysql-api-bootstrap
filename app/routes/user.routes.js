@@ -1,24 +1,29 @@
 const express = require('express');
 let router = express.Router();
 
-const users = require("../controllers/user.controller.js");
+const user = require("../controllers/user.controller.js");
+
+// simple route
+router.get('/', (req, res) => {
+    res.json({ message: 'doYou know a..' });
+});
 
 // create a new user
-router.post("/users", users.create);
+router.post("/users", user.create);
 
 // retrieve all users
-router.get("/users", users.findAll);
+router.get("/users", user.findAll);
 
 // retrieve a single user with id_user
-router.get("/users/:id_user", users.findById);
+router.get("/users/:id_user", user.findById);
+
+// retrieve a single user with username
+router.get("/users/username/:username", user.findByusername);
 
 // update a user with id_user
-router.put("/users/:id_user", users.updateById);
+router.put("/users/:id_user", user.updateById);
 
 // delete a user with id_user
-router.delete("/users/:id_user", users.delete);
-
-// delete all users
-router.delete("/users", users.deleteAll);
+router.delete("/users/:id_user", user.deleteById);
 
 module.exports = router;

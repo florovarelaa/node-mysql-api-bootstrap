@@ -9,38 +9,22 @@ beforeAll(done => {
   })
   
 afterAll( done => {
-// Closing the DB connection allows Jest to exit successfully.
+// closing the DB connection allows jest to exit successfully.
     sql.end()
     done()
 })
 
-describe("Testing the API", () => {
-
-    it('It should response the get / method', async done => {
-        const response = await supertest(app).get('/')
-        expect(response.statusCode).toBe(200);
-        done();
-    });
-})
-
 describe("Testing the users API", () => {
 
-    it('It should response the get /user/:id method', async done => {
-        const response = await supertest(app).get('/users/1');
-        expect(response.statusCode).toBe(200);
-        expect(response.body.id_user).toBe(1);
-        done();
-    });
+    const user = {
+        username: 'test_user',
+        pass: '654321',
+        firstname: 'test_user_firstname',
+        lastname: 'test_user_lastname',
+        email: 'test_user@test.com',
+    }
 
-    it('It should save user to the database with post /user method', async done => {
-
-        const user = {
-            username: 'testUser1',
-            pass: '123123123',
-            firstName: 'Test',
-            lastName: 'User 1',
-            email: 'testuser1@testuser.com',
-        }
+    it('It should save user to the database with post /user/:id_user method', async done => {
 
         const responsePostUser = await supertest(app).post('/users').send(user);
         const responseGetUserByUsername = await supertest(app).get(`/users/username/${user.username}`)
@@ -53,22 +37,6 @@ describe("Testing the users API", () => {
         expect(responseGetUserByUsername.body.username).toBe(user.username);
         done();
     });
-
-    it('It should throw an error when sending and empty user to the database with post /user method', async done => {
-        const emptyUser = {
-            username: 'testUser1',
-            pass: '123123123',
-            firstName: 'Test',
-            lastName: 'User 1',
-            email: 'testuser1@testuser.com',
-        };
-        try {
-            const responsePostEmptyUser = await supertest(app).post('/users').send(emptyUser);
-        } catch (error) {
-            expect(error).toThrow()
-        }
-        done();
-    })
 
     it('It should response the get /users', async done => {
         const response = await supertest(app).get('/users');
@@ -85,30 +53,30 @@ describe("Testing the users API", () => {
     });
 
     it('It should response the get /users/:username method', async done => {
-        const response = await supertest(app).get('/users/username/testUser1');
+        const response = await supertest(app).get(`/users/username/${user.username}`);
         expect(response.statusCode).toBe(200);
-        expect(response.body.username).toBe('testUser1');
+        expect(response.body.username).toBe(`${user.username}`);
         done();
     });
 
     it('It should update user in the database with put /user/:id_user method', async done => {
         const user = {
-            firstname: 'UserUpdatedWithTest',
-            lastname: 'UpdatedUserWithTest',
-            email: 'updatedUser@withTest.com',
+            firstname: 'userUpdatedWithTest',
+            lastname: 'UpdateduserWithTest',
+            email: 'updateduser@withTest.com',
         }
-        const responsePutUser = await supertest(app).put(`/users/${id_test_user}`).send(user);
-        const responseGetUserById = await supertest(app).get(`/users/${id_test_user}`)
-        expect(responsePutUser.statusCode).toBe(200);
-        expect(responseGetUserById.statusCode).toBe(200);
-        expect(responseGetUserById.body.firstname).toBe(user.firstname);
+        const responsePutuser = await supertest(app).put(`/users/${id_test_user}`).send(user);
+        const responseGetuserById = await supertest(app).get(`/users/${id_test_user}`)
+        expect(responsePutuser.statusCode).toBe(200);
+        expect(responseGetuserById.statusCode).toBe(200);
+        expect(responseGetuserById.body.firstname).toBe(user.firstname);
         done();
     });
 
     it('It should delete user in the database with delete /user/:id_user method', async done => {
 
-        const responseDeleteUser = await supertest(app).del(`/users/${id_test_user}`);
-        expect(responseDeleteUser.statusCode).toBe(200);
+        const responseDeleteuser = await supertest(app).del(`/users/${id_test_user}`);
+        expect(responseDeleteuser.statusCode).toBe(200);
         done();
     });
 });

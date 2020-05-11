@@ -11,6 +11,8 @@ app.use(bodyParser.json());
 // parse requests of content-type: application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(routes);
+// router middleware
+app.use(routes)
+
 
 module.exports = app;
