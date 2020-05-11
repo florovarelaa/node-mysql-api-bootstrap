@@ -1,6 +1,6 @@
 const User = require('../models/user.model.js');
 
-// Create and cave a new user
+// create and save a new user
 exports.create = (req, res) => {
   
   // validate request
@@ -23,7 +23,7 @@ exports.create = (req, res) => {
   User.create(user, (err, data) => {
       if (err) {
           res.status(500).send({
-              message: err.message || 'An error ocurred when creating the User.'
+              message: err.message || 'An error ocurred when creating the user.'
           });
       } else {
           res.send(data);
@@ -36,7 +36,7 @@ exports.findAll = (req, res) => {
   User.getAll( (err, data) => {
     if (err) {
         res.status(500).send({
-            message: err.message || 'An error ocurred while retrieving Users.'
+            message: err.message || 'An error ocurred while retrieving users.'
         })
     } else {
         res.send(data);
@@ -44,17 +44,17 @@ exports.findAll = (req, res) => {
   })
 };
 
-// Find a single user with a userId
-exports.findOne = (req, res) => {
-    User.findById(req.params.userId, (err, data) => {
+// Find a single user with a id_user
+exports.findById = (req, res) => {
+    User.findById(req.params.id_user, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found User with id ${req.params.userId}.`
+                    message: `Not found User with id ${req.params.id_user}.`
                 });
             } else {
                 res.status(500).send({
-                    message: "Error retrieving User with id " + req.params.userId
+                    message: "Error retrieving User with id " + req.params.id_user
                 });
             }
         } else {
@@ -63,8 +63,8 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Update a user identified by the userId in the request
-exports.update = (req, res) => {
+// Update a user identified by the id_user in the request
+exports.updateById = (req, res) => {
   // Validate Request
   if (!req.body) {
     res.status(400).send({
@@ -73,17 +73,17 @@ exports.update = (req, res) => {
   }
 
   User.updateById(
-    req.params.userId,
+    req.params.id_user,
     new User(req.body),
     (err, data) => {
       if (err) {
         if (err.kind === "not_found") {
           res.status(404).send({
-            message: `Not found User with id ${req.params.userId}.`
+            message: `Not found User with id ${req.params.id_user}.`
           });
         } else {
           res.status(500).send({
-            message: "Error updating User with id " + req.params.userId
+            message: "Error updating User with id " + req.params.id_user
           });
         }
       } else {
@@ -93,17 +93,17 @@ exports.update = (req, res) => {
   );
 };
 
-// Delete a user with the specified userId in the request
+// Delete a user with the specified id_user in the request
 exports.delete = (req, res) => {
-    User.remove(req.params.userId, (err, data) => {
+    User.remove(req.params.id_user, (err, data) => {
         if (err) {
           if (err.kind === "not_found") {
             res.status(404).send({
-              message: `Not found user with id ${req.params.userId}.`
+              message: `Not found user with id ${req.params.id_user}.`
             });
           } else {
             res.status(500).send({
-              message: "Could not delete User with id " + req.params.userId
+              message: "Could not delete User with id " + req.params.id_user
             });
           }
         } else {
